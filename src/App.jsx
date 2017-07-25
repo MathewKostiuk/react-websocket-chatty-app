@@ -5,6 +5,7 @@ import NavBar from './NavBar.jsx';
 
 class App extends Component {
   render() {
+    console.log('rendering App');
     return (
       <div>
         <NavBar />
