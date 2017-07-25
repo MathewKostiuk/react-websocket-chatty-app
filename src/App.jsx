@@ -4,13 +4,31 @@ import MessageList from './MessageList.jsx';
 import NavBar from './NavBar.jsx';
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentUser: {name: "Bob"}, // optional. if currentUser is not defined, it means the user is Anonymous
+       messages: [
+         {
+           username: "Bob",
+           content: "Has anyone seen my marbles?",
+           id: 1
+         },
+         {
+           username: "Anonymous",
+           content: "No, I think you lost them. You lost your marbles Bob. You lost them for good.",
+           id: 2
+         }
+       ]
+    }
+  }
+
   render() {
-    console.log('rendering App');
     return (
       <div>
         <NavBar />
-        <MessageList/>
-        <Chatbar/>
+        <MessageList messages={ this.state.messages }/>
+        <Chatbar currentUser={ this.state.currentUser } />
       </div>
     );
   }
