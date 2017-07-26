@@ -18,6 +18,11 @@ class App extends Component {
       content: content
     };
     this.socket.send(JSON.stringify(newMessage));
+  }
+
+  componentDidMount() {
+    this.socket = new WebSocket("ws://localhost:3001");
+    console.log('Connected to server');
 
     this.socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
@@ -32,11 +37,6 @@ class App extends Component {
         currentUser: {name: data.username}
       });
     }
-  }
-
-  componentDidMount() {
-    this.socket = new WebSocket("ws://localhost:3001");
-    console.log('Connected to server');
 
   }
   render() {
