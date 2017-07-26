@@ -8,37 +8,40 @@ class App extends Component {
     super(props);
     this.state = {
       currentUser: {name: "Bob"}, // optional. if currentUser is not defined, it means the user is Anonymous
-       messages: [
-         {
-           username: "Bob",
-           content: "Has anyone seen my marbles?",
-           id: 1
-         },
-         {
-           username: "Anonymous",
-           content: "No, I think you lost them. You lost your marbles Bob. You lost them for good.",
-           id: 2
-         }
-       ]
-    }
+       messages: []
+    };
   }
 
   addMessage(content, username)  {
     const newMessage = {
       username: username,
-      content: content,
-      id: Math.random()
+      content: content
     };
-    const messages = this.state.messages.concat(newMessage);
-    this.setState(
-      {messages: messages}
-    );
     this.socket.send(JSON.stringify(newMessage));
+
+    this.socket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      const message = {
+        key: data.key,
+        username: data.username,
+        content: data.content
+      }
+      console.log(message);
+      const messages = this.state.messages.concat(message);
+      this.setState(
+        {messages: messages}
+      );
+      console.log(this.state);
+    }
+
+
   }
 
   componentDidMount() {
     this.socket = new WebSocket("ws://localhost:3001");
     console.log('Connected to server');
+
+
   }
   render() {
     return (
