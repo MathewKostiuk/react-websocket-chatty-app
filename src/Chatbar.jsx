@@ -5,7 +5,12 @@ class Chatbar extends Component {
     return (
       <footer className='chatbar'>
         <input className='chatbar-username' placeholder={ this.props.currentUser.name } />
-        <input className='chatbar-message' placeholder='Type a message and hit ENTER' />
+        <input className='chatbar-message' placeholder='Type a message and hit ENTER' onKeyDown={(event) => {
+          if (event.key === 'Enter') {
+            this.props.addMessages(event.target.value, this.props.currentUser.name);
+            event.target.value = '';
+          }
+        }} />
       </footer>
       );
   }

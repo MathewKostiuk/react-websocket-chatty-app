@@ -23,12 +23,29 @@ class App extends Component {
     }
   }
 
+  addMessage(content, username)  {
+    const newMessage = {
+      username: username,
+      content: content,
+      id: Math.random()
+    };
+    const messages = this.state.messages.concat(newMessage);
+    this.setState(
+      {messages: messages}
+    );
+    this.socket.send(JSON.stringify(newMessage));
+  }
+
+  componentDidMount() {
+    this.socket = new WebSocket("ws://localhost:3001");
+    console.log('Connected to server');
+  }
   render() {
     return (
       <div>
         <NavBar />
         <MessageList messages={ this.state.messages }/>
-        <Chatbar currentUser={ this.state.currentUser } />
+        <Chatbar currentUser={ this.state.currentUser } addMessages={this.addMessage.bind(this)} />
       </div>
     );
   }
