@@ -7,13 +7,14 @@ class MessageList extends Component {
       return <Message
       key={ message.key }
       username={ message.username }
-      content={ message.content } />
+      content={ message.content }
+      type={message.type}
+      notification={message.notification} />
     })
     return (
       <main className="messages">
         { messages }
         <div className='message-system'>
-          {this.props.notification}
         </div>
       </main>
       );
