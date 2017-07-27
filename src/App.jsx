@@ -7,16 +7,23 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentUser: {name: "Bob"}, // optional. if currentUser is not defined, it means the user is Anonymous
-       messages: []
+      currentUser: {name: "Anonymous"}, // optional. if currentUser is not defined, it means the user is Anonymous
+       messages: [],
+       notificationString: ''
     };
   }
 
   addMessage(content, username)  {
     const newMessage = {
       username: username,
-      content: content
+      content: content,
+      type: ''
     };
+    if (username !== this.state.currentUser.name) {
+      newMessage.type = 'postNotification'
+    } else {
+      newMessage.type = 'postMessage'
+    }
     this.socket.send(JSON.stringify(newMessage));
   }
 
@@ -32,18 +39,34 @@ class App extends Component {
         content: data.content
       }
       const messages = this.state.messages.concat(message);
-      this.setState({
-        messages: messages,
-        currentUser: {name: data.username}
-      });
-    }
 
+      switch(data.type) {
+        case "incomingMessage":
+        this.setState({
+          messages: messages,
+          currentUser: {name: data.username},
+          notificationString: ''
+
+        });
+        break;
+        case "incomingNotification":
+        this.setState({
+          notificationString: `${this.state.currentUser.name} changed their name to ${data.username}`,
+          messages: messages,
+          currentUser: {name: data.username}
+        })
+        break;
+        default:
+
+        throw new Error("Unknown event type " + data.type);
+      }
+    }
   }
   render() {
     return (
       <div>
         <NavBar />
-        <MessageList messages={ this.state.messages }/>
+        <MessageList messages={this.state.messages} notification={this.state.notificationString}/>
         <Chatbar currentUser={this.state.currentUser.name} addMessages={this.addMessage.bind(this)} />
       </div>
     );
