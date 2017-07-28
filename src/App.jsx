@@ -15,7 +15,6 @@ class App extends Component {
   }
 
   addMessage(content, username)  {
-    console.log(this.state.currentUser.name);
     const newMessage = {
       username: username,
       content: content,
@@ -38,7 +37,6 @@ class App extends Component {
 
 
       if (data.type === 'onlineUsers' && data.number <= 1 ) {
-        console.log('works');
         this.setState({
           onlineUsers: data.number + ' user online'
         });
@@ -57,7 +55,6 @@ class App extends Component {
           notification: '',
           colour: data.colour
         }
-        console.log(message);
 
       if (data.type === 'incomingNotification') {
         message.notification = this.state.currentUser.name + ' has changed their name to '+ data.username;

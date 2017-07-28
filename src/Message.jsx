@@ -19,12 +19,12 @@ class Message extends Component {
     const style = {color: this.props.colour};
     return (
       <div>
-      <div className='message'>
-        <span className="message-username" style={style}>{ this.props.username }</span>
-        <span className="message-content">{ this.props.content }</span>
-      </div>
-        {this.parseType()}
+        <div className='message'>
+          <span className="message-username" style={style}>{ this.props.username }</span>
+          <span className="message-content">{ this.props.content }</span>
         </div>
+        {this.parseType()}
+      </div>
       );
   }
 }

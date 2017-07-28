@@ -24,16 +24,13 @@ wss.broadcast = function broadcast(data) {
 };
 
 colourPicker = () => {
-  const colours = ['#941010', '#FA34D6', '#1B262B', '#148887'];
-  const random = Math.floor(Math.random() * 4);
+  const colours = ['#941010', '#FA34D6', '#1B262B', '#148887', '#EB8D13', '#6613E8', '#EDF31C'];
+  const random = Math.floor(Math.random() * 7);
   return colours[random];
 };
-
-
 // Set up a callback that will run when a client connects to the server
 // When a client connects they are assigned a socket, represented by
 // the ws parameter in the callback.
-
 wss.on('connection', (ws) => {
   console.log('Client connected');
   let numberOfClients = wss.clients.size;
@@ -55,7 +52,7 @@ wss.on('connection', (ws) => {
       content: msg.content,
       key: uuid,
       type: '',
-      colour: colour
+      colour: msg.colour ? msg.colour : colour
     };
     if (msg.type === 'postMessage') {
       response.type = 'incomingMessage';
@@ -66,7 +63,6 @@ wss.on('connection', (ws) => {
     const jString = JSON.stringify(response);
     wss.broadcast(jString);
   };
-
   // Set up a callback for when a client closes the socket. This usually means they closed their browser.
   ws.on('close', () => {
     console.log('Client disconnected');
