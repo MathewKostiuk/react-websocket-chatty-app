@@ -18,7 +18,7 @@ handleInput(event) {
   render() {
     return (
       <footer className='chatbar'>
-        <input name='username' className='chatbar-username' defaultValue='Anonymous' onChange={this.handleInput} />
+        <input name='username' className='chatbar-username' placeholder='Your Name (optional)' onChange={this.handleInput} />
         <input className='chatbar-message' placeholder='Type a message and hit ENTER' onKeyDown={(event) => {
           if (event.key === 'Enter') {
             this.props.addMessages(event.target.value, this.state.username);
