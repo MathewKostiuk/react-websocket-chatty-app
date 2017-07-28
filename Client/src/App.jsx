@@ -9,11 +9,13 @@ class App extends Component {
     super(props);
     this.state = {
       currentUser: {name: "Anonymous"}, // optional. if currentUser is not defined, it means the user is Anonymous
-       messages: []
+       messages: [],
+       onlineUsers: 1
     };
   }
 
   addMessage(content, username)  {
+    console.log(this.state.currentUser.name);
     const newMessage = {
       username: username,
       content: content,
@@ -33,25 +35,36 @@ class App extends Component {
 
     this.socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      const notif = this.state.currentUser.name + ' has changed their name to '+ data.username;
 
-      const message = {
-        key: data.key,
-        username: data.username,
-        content: data.content,
-        type: data.type,
-        notification: ''
+
+      if (data.type === 'onlineUsers' && data.number <= 1 ) {
+        console.log('works');
+        this.setState({
+          onlineUsers: data.number + ' user online'
+        });
+        return;
+      } if (data.type === 'onlineUsers' && data.number > 1) {
+        this.setState({
+          onlineUsers: data.number + ' users online'
+        })
+        return;
       }
+        const message = {
+          key: data.key,
+          username: data.username,
+          content: data.content,
+          type: data.type,
+          notification: '',
+          colour: data.colour
+        }
+        console.log(message);
 
       if (data.type === 'incomingNotification') {
         message.notification = this.state.currentUser.name + ' has changed their name to '+ data.username;
       }
-
-      console.log(message);
       const messages = this.state.messages.concat(message);
       this.setState({
           messages: messages,
-          previousUser: {name: this.state.currentUser.name},
           currentUser: {name: data.username}
         });
     }
@@ -59,8 +72,8 @@ class App extends Component {
   render() {
     return (
       <div>
-        <NavBar />
-        <MessageList messages={this.state.messages} previousUser={this.state.previousUser} />
+        <NavBar onlineUsers={this.state.onlineUsers} />
+        <MessageList messages={this.state.messages} />
         <Chatbar currentUser={this.state.currentUser.name} addMessages={this.addMessage.bind(this)} />
       </div>
     );
