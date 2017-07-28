@@ -2,13 +2,12 @@ import React, {Component} from 'react';
 import Chatbar from './Chatbar.jsx';
 import MessageList from './MessageList.jsx';
 import NavBar from './NavBar.jsx';
-import Message from './Message.jsx';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentUser: {name: "Anonymous"}, // optional. if currentUser is not defined, it means the user is Anonymous
+      currentUser: {name: 'Anonymous'}, // optional. if currentUser is not defined, it means the user is Anonymous
        messages: [],
        onlineUsers: 1
     };
@@ -29,7 +28,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.socket = new WebSocket("ws://localhost:3001");
+    this.socket = new WebSocket('ws://localhost:3001');
     console.log('Connected to server');
 
     this.socket.onmessage = (event) => {

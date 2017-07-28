@@ -4,14 +4,12 @@ class Message extends Component {
 
   parseType() {
     switch(this.props.type) {
-      case "incomingMessage":
+      case 'incomingMessage':
         return;
-        break;
-      case "incomingNotification":
+      case 'incomingNotification':
         return  <div className='message-system'>
         {this.props.notification}
         </div>
-        break;
     }
   }
 
@@ -20,8 +18,8 @@ class Message extends Component {
     return (
       <div>
         <div className='message'>
-          <span className="message-username" style={style}>{ this.props.username }</span>
-          <span className="message-content">{ this.props.content }</span>
+          <span className='message-username' style={style}>{ this.props.username }</span>
+          <span className='message-content'>{ this.props.content }</span>
         </div>
         {this.parseType()}
       </div>
