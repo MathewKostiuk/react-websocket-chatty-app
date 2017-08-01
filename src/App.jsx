@@ -20,9 +20,9 @@ class App extends Component {
       type: ''
     };
     if (username !== this.state.currentUser.name) {
-      newMessage.type = 'postNotification'
+      newMessage.type = 'postNotification';
     } else {
-      newMessage.type = 'postMessage'
+      newMessage.type = 'postMessage';
     }
     this.socket.send(JSON.stringify(newMessage));
   }
@@ -43,7 +43,7 @@ class App extends Component {
       } if (data.type === 'onlineUsers' && data.number > 1) {
         this.setState({
           onlineUsers: data.number + ' users online'
-        })
+        });
         return;
       }
         const message = {
@@ -53,17 +53,16 @@ class App extends Component {
           type: data.type,
           notification: '',
           colour: data.colour
-        }
+        };
 
       if (data.type === 'incomingNotification') {
         message.notification = this.state.currentUser.name + ' has changed their name to '+ data.username;
       }
       const messages = this.state.messages.concat(message);
       this.setState({
-          messages: messages,
-          currentUser: {name: data.username}
+          messages: messages
         });
-    }
+    };
   }
   render() {
     return (
