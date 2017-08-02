@@ -1,10 +1,8 @@
 const express = require('express');
 const SocketServer = require('ws').Server;
 
-// Set the port to 3001
 const PORT = 3001;
 
-// Create a new express server
 const server = express()
   // Make the express server serve static assets (html, javascript, css) from the /public folder
   .use(express.static('public'))
@@ -22,7 +20,7 @@ wss.broadcast = function broadcast(data) {
     }
   });
 };
-
+// Returns a random colour
 colourPicker = () => {
   const colours = ['#941010', '#FA34D6', '#1B262B', '#148887', '#EB8D13', '#6613E8', '#EDF31C'];
   const random = Math.floor(Math.random() * 7);
@@ -31,6 +29,8 @@ colourPicker = () => {
 // Set up a callback that will run when a client connects to the server
 // When a client connects they are assigned a socket, represented by
 // the ws parameter in the callback.
+
+
 wss.on('connection', (ws) => {
   console.log('Client connected');
   let numberOfClients = wss.clients.size;
@@ -39,6 +39,7 @@ wss.on('connection', (ws) => {
     type: 'onlineUsers'
   };
   let colour = colourPicker();
+  // Send a message to all connected clients when a new user connects, updating Online User Count
   wss.broadcast(JSON.stringify(clients));
 
   ws.onmessage = (event) => {
@@ -46,14 +47,18 @@ wss.on('connection', (ws) => {
     if (msg.content === '') {
       return;
     }
+
     const uuid = uuidv4();
     const response = {
       username: msg.username,
       content: msg.content,
       key: uuid,
       type: '',
+      // if message came with a colour set, keep that colour. otherwise, use random generated
       colour: msg.colour ? msg.colour : colour
     };
+
+    // Check message type and structure response accordingly
     if (msg.type === 'postMessage') {
       response.type = 'incomingMessage';
     }

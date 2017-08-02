@@ -34,7 +34,7 @@ class App extends Component {
     this.socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
 
-
+      // Determine plurality of online users
       if (data.type === 'onlineUsers' && data.number <= 1 ) {
         this.setState({
           onlineUsers: data.number + ' user online'
@@ -46,6 +46,7 @@ class App extends Component {
         });
         return;
       }
+      // Structure message based on event data
         const message = {
           key: data.key,
           username: data.username,
@@ -54,10 +55,11 @@ class App extends Component {
           notification: '',
           colour: data.colour
         };
-
+        // Construct notification message based on data-type
       if (data.type === 'incomingNotification') {
         message.notification = this.state.currentUser.name + ' has changed their name to '+ data.username;
       }
+      // Make new array of messages
       const messages = this.state.messages.concat(message);
       this.setState({
           messages: messages
