@@ -54,6 +54,7 @@ wss.on('connection', (ws) => {
       content: msg.content,
       key: uuid,
       type: '',
+      oldUsername: msg.oldUsername,
       // if message came with a colour set, keep that colour. otherwise, use random generated
       colour: msg.colour ? msg.colour : colour
     };

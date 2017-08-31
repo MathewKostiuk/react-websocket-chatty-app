@@ -17,10 +17,14 @@ class App extends Component {
     const newMessage = {
       username: username,
       content: content,
-      type: ''
+      type: '',
+      oldUsername: this.state.currentUser.name
     };
     if (username !== this.state.currentUser.name) {
       newMessage.type = 'postNotification';
+      this.setState({
+        currentUser: {name: username}
+      });
     } else {
       newMessage.type = 'postMessage';
     }
@@ -53,11 +57,12 @@ class App extends Component {
           content: data.content,
           type: data.type,
           notification: '',
-          colour: data.colour
+          colour: data.colour,
+          oldUsername: data.oldUsername
         };
         // Construct notification message based on data-type
       if (data.type === 'incomingNotification') {
-        message.notification = this.state.currentUser.name + ' has changed their name to '+ data.username;
+        message.notification = data.oldUsername + ' has changed their name to '+ data.username;
       }
       // Make new array of messages
       const messages = this.state.messages.concat(message);
